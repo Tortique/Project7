@@ -1,6 +1,7 @@
 package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.BidList;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,6 +14,7 @@ import javax.validation.Valid;
 
 
 @Controller
+@EnableWebSecurity
 public class BidListController {
     // TODO: Inject Bid service
 
