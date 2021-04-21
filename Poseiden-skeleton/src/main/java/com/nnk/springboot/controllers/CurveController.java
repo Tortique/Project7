@@ -2,6 +2,8 @@ package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.CurvePoint;
 import com.nnk.springboot.repositories.CurvePointRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.stereotype.Controller;
@@ -26,6 +28,8 @@ import java.sql.Timestamp;
 @Controller
 @EnableWebSecurity
 public class CurveController {
+    private final Logger logger = LogManager.getLogger("CurveController");
+
     @Autowired
     private CurvePointRepository curvePointRepository;
 
@@ -33,6 +37,7 @@ public class CurveController {
     public String home(Model model)
     {
         model.addAttribute("curvePoints", curvePointRepository.findAll());
+        logger.info("Getting CurvePointList");
         return "curvePoint/list";
     }
 
@@ -47,6 +52,7 @@ public class CurveController {
             curvePoint.setCreationDate(new Timestamp(System.currentTimeMillis()));
             curvePointRepository.save(curvePoint);
             model.addAttribute("curvePoints", curvePointRepository.findAll());
+            logger.info("New CurvePoint saved");
             return "redirect:/curvePoint/list";
         }
         return "curvePoint/add";
@@ -68,6 +74,7 @@ public class CurveController {
         }
         curvePointRepository.save(curvePoint);
         model.addAttribute("curvePoints", curvePointRepository.findAll());
+        logger.info("CurvePoint updated");
         return "redirect:/curvePoint/list";
     }
 
@@ -76,6 +83,7 @@ public class CurveController {
         CurvePoint curvePoint = curvePointRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid curvePoint Id:" + id));
         curvePointRepository.delete(curvePoint);
         model.addAttribute("curvePoints", curvePointRepository.findAll());
+        logger.info("CurvePoint deleted");
         return "redirect:/curvePoint/list";
     }
 }

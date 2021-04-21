@@ -2,6 +2,8 @@ package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.Rating;
 import com.nnk.springboot.repositories.RatingRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.stereotype.Controller;
@@ -25,6 +27,8 @@ import javax.validation.Valid;
 @Controller
 @EnableWebSecurity
 public class RatingController {
+    private final Logger logger = LogManager.getLogger("RatingController");
+
     @Autowired
     private RatingRepository ratingRepository;
 
@@ -32,6 +36,7 @@ public class RatingController {
     public String home(Model model)
     {
         model.addAttribute("ratings", ratingRepository.findAll());
+        logger.info("Getting RatingList");
         return "rating/list";
     }
 
@@ -45,6 +50,7 @@ public class RatingController {
         if (!result.hasErrors()) {
             ratingRepository.save(rating);
             model.addAttribute("ratings", ratingRepository.findAll());
+            logger.info("New rating saved");
             return "redirect:/rating/list";
         }
         return "rating/add";
@@ -66,6 +72,7 @@ public class RatingController {
         }
         ratingRepository.save(rating);
         model.addAttribute("ratings", ratingRepository.findAll());
+        logger.info("Rating updated");
         return "redirect:/rating/list";
     }
 
@@ -74,6 +81,7 @@ public class RatingController {
         Rating rating = ratingRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid rating Id:" + id));
         ratingRepository.delete(rating);
         model.addAttribute("ratings", ratingRepository.findAll());
+        logger.info("Rating deleted");
         return "redirect:/rating/list";
     }
 }

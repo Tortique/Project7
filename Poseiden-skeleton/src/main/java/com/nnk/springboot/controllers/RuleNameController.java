@@ -2,6 +2,8 @@ package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.RuleName;
 import com.nnk.springboot.repositories.RuleNameRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.stereotype.Controller;
@@ -25,6 +27,8 @@ import javax.validation.Valid;
 @Controller
 @EnableWebSecurity
 public class RuleNameController {
+    private final Logger logger = LogManager.getLogger("RuleNameController");
+
     @Autowired
     private RuleNameRepository ruleNameRepository;
 
@@ -32,6 +36,7 @@ public class RuleNameController {
     public String home(Model model)
     {
         model.addAttribute("ruleNames", ruleNameRepository.findAll());
+        logger.info("Getting RuleNameList");
         return "ruleName/list";
     }
 
@@ -45,6 +50,7 @@ public class RuleNameController {
         if (!result.hasErrors()) {
             ruleNameRepository.save(ruleName);
             model.addAttribute("ruleNames", ruleNameRepository.findAll());
+            logger.info("New ruleName saved");
             return "redirect:/ruleName/list";
         }
         return "ruleName/add";
@@ -66,6 +72,7 @@ public class RuleNameController {
         }
         ruleNameRepository.save(ruleName);
         model.addAttribute("ruleNames", ruleNameRepository.findAll());
+        logger.info("RuleName updated");
         return "redirect:/ruleName/list";
     }
 
@@ -74,6 +81,7 @@ public class RuleNameController {
         RuleName ruleName = ruleNameRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid ruleName Id:" + id));
         ruleNameRepository.delete(ruleName);
         model.addAttribute("ruleNames", ruleNameRepository.findAll());
+        logger.info("RuleName deleted");
         return "redirect:/ruleName/list";
     }
 }

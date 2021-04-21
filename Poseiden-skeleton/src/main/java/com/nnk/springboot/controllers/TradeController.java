@@ -2,6 +2,8 @@ package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.Trade;
 import com.nnk.springboot.repositories.TradeRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.stereotype.Controller;
@@ -26,6 +28,8 @@ import java.sql.Timestamp;
 @Controller
 @EnableWebSecurity
 public class TradeController {
+    private final Logger logger = LogManager.getLogger("TradeController");
+
     @Autowired
     private TradeRepository tradeRepository;
 
@@ -33,6 +37,7 @@ public class TradeController {
     public String home(Model model)
     {
         model.addAttribute("trades", tradeRepository.findAll());
+        logger.info("Getting TradeList");
         return "trade/list";
     }
 
@@ -47,6 +52,7 @@ public class TradeController {
             trade.setCreationDate(new Timestamp(System.currentTimeMillis()));
             tradeRepository.save(trade);
             model.addAttribute("trades", tradeRepository.findAll());
+            logger.info("New trade saved");
             return "redirect:/trade/list";
         }
         return "trade/add";
@@ -68,6 +74,7 @@ public class TradeController {
         }
         tradeRepository.save(trade);
         model.addAttribute("trades", tradeRepository.findAll());
+        logger.info("Trade updated");
         return "redirect:/trade/list";
     }
 
@@ -76,6 +83,7 @@ public class TradeController {
         Trade trade = tradeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid trade Id:" + id));
         tradeRepository.delete(trade);
         model.addAttribute("trades", tradeRepository.findAll());
+        logger.info("Trade deleted");
         return "redirect:/trade/list";
     }
 }
