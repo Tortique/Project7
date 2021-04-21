@@ -14,6 +14,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.annotation.Resource;
 
+/**
+ * Created by SERVANT Adrien
+ * Date 04/20/21
+ * Time 14:00
+ */
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
