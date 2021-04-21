@@ -1,8 +1,6 @@
 package com.nnk.springboot.domain;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import java.sql.Timestamp;
 
 @Entity
 @Table(name = "rulename")
@@ -16,6 +14,19 @@ public class RuleName {
     private String template;
     private String sqlStr;
     private String sqlPart;
+
+    public RuleName(String name, String description, String json, String template, String sqlStr, String sql_part) {
+        this.name = name;
+        this.description = description;
+        this.json = json;
+        this.template = template;
+        this.sqlStr = sqlStr;
+        this.sqlPart = sql_part;
+    }
+
+    public RuleName() {
+
+    }
 
     public Integer getId() {
         return id;

@@ -1,8 +1,6 @@
 package com.nnk.springboot.domain;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import java.sql.Time;
 import java.sql.Timestamp;
 
 
@@ -32,6 +30,15 @@ public class Trade {
     private String dealType;
     private String sourceListId;
     private String side;
+
+    public Trade(String account, String type) {
+        this.account = account;
+        this.type = type;
+    }
+
+    public Trade() {
+
+    }
 
     public Integer getTradeId() {
         return tradeId;
