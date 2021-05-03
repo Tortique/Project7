@@ -2,6 +2,8 @@ package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.User;
 import com.nnk.springboot.repositories.UserRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,6 +20,8 @@ import javax.validation.Valid;
 @Controller
 @EnableWebSecurity
 public class UserController {
+    private final Logger logger = LogManager.getLogger("UserController");
+
     @Autowired
     private UserRepository userRepository;
 
@@ -25,6 +29,7 @@ public class UserController {
     public String home(Model model)
     {
         model.addAttribute("users", userRepository.findAll());
+        logger.info("Getting UserList");
         return "user/list";
     }
 
@@ -40,6 +45,7 @@ public class UserController {
             user.setPassword(encoder.encode(user.getPassword()));
             userRepository.save(user);
             model.addAttribute("users", userRepository.findAll());
+            logger.info("New User saved");
             return "redirect:/user/list";
         }
         return "user/add";
@@ -65,6 +71,7 @@ public class UserController {
         user.setId(id);
         userRepository.save(user);
         model.addAttribute("users", userRepository.findAll());
+        logger.info("User updated");
         return "redirect:/user/list";
     }
 
@@ -73,6 +80,7 @@ public class UserController {
         User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
         userRepository.delete(user);
         model.addAttribute("users", userRepository.findAll());
+        logger.info("User deleted");
         return "redirect:/user/list";
     }
 }

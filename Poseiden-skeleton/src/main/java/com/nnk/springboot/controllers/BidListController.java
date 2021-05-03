@@ -2,6 +2,9 @@ package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.BidList;
 import com.nnk.springboot.repositories.BidListRepository;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.stereotype.Controller;
@@ -27,12 +30,15 @@ import java.sql.Timestamp;
 @Controller
 @EnableWebSecurity
 public class BidListController {
+    private final Logger logger = LogManager.getLogger("BidListController");
+
     @Autowired
     private BidListRepository bidListRepository;
 
     @RequestMapping("/bidList/list")
     public String home(Model model) {
         model.addAttribute("bidList", bidListRepository.findAll());
+        logger.info("Getting BidList");
         return "bidList/list";
     }
 
@@ -47,6 +53,7 @@ public class BidListController {
             bid.setCreationDate((new Timestamp(System.currentTimeMillis())));
             bidListRepository.save(bid);
             model.addAttribute("bidList", bidListRepository.findAll());
+            logger.info("New BidList saved");
             return "redirect:/bidList/list";
         }
         return "bidList/add";
@@ -68,6 +75,7 @@ public class BidListController {
         }
         bidListRepository.save(bidList);
         model.addAttribute("bidList", bidListRepository.findAll());
+        logger.info("BidList updated");
         return "redirect:/bidList/list";
     }
 
@@ -76,6 +84,7 @@ public class BidListController {
         BidList bidList = bidListRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid bidList id:" + id));
         bidListRepository.delete(bidList);
         model.addAttribute("bidList", bidListRepository.findAll());
+        logger.info("BidList deleted");
         return "redirect:/bidList/list";
     }
 }
