@@ -1,6 +1,10 @@
 package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.Rating;
+import com.nnk.springboot.repositories.RatingRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,15 +16,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
 
+/**
+ * Created by SERVANT Adrien
+ * Date 04/21/21
+ * Time 16:20
+ *
+ * Comment : Html's problems "can't resolve [...]" worked fine, its known issues since 2015 with Intellij
+ */
+
 @Controller
 @EnableWebSecurity
 public class RatingController {
-    // TODO: Inject Rating service
+    private final Logger logger = LogManager.getLogger("RatingController");
+
+    @Autowired
+    private RatingRepository ratingRepository;
 
     @RequestMapping("/rating/list")
     public String home(Model model)
     {
-        // TODO: find all Rating, add to model
+        model.addAttribute("ratings", ratingRepository.findAll());
+        logger.info("Getting RatingList");
         return "rating/list";
     }
 
@@ -31,26 +47,41 @@ public class RatingController {
 
     @PostMapping("/rating/validate")
     public String validate(@Valid Rating rating, BindingResult result, Model model) {
-        // TODO: check data valid and save to db, after saving return Rating list
+        if (!result.hasErrors()) {
+            ratingRepository.save(rating);
+            model.addAttribute("ratings", ratingRepository.findAll());
+            logger.info("New rating saved");
+            return "redirect:/rating/list";
+        }
         return "rating/add";
     }
 
     @GetMapping("/rating/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
-        // TODO: get Rating by Id and to model then show to the form
+        Rating rating = ratingRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid rating Id:" + id));
+        model.addAttribute("rating", rating);
         return "rating/update";
     }
 
     @PostMapping("/rating/update/{id}")
     public String updateRating(@PathVariable("id") Integer id, @Valid Rating rating,
                              BindingResult result, Model model) {
-        // TODO: check required fields, if valid call service to update Rating and return Rating list
+        if (result.hasErrors()) {
+            rating.setId(id);
+            return "rating/update";
+        }
+        ratingRepository.save(rating);
+        model.addAttribute("ratings", ratingRepository.findAll());
+        logger.info("Rating updated");
         return "redirect:/rating/list";
     }
 
     @GetMapping("/rating/delete/{id}")
     public String deleteRating(@PathVariable("id") Integer id, Model model) {
-        // TODO: Find Rating by Id and delete the Rating, return to Rating list
+        Rating rating = ratingRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid rating Id:" + id));
+        ratingRepository.delete(rating);
+        model.addAttribute("ratings", ratingRepository.findAll());
+        logger.info("Rating deleted");
         return "redirect:/rating/list";
     }
 }
