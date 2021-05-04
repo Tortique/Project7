@@ -3,6 +3,10 @@ package com.nnk.springboot.domain;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
+/**
+ * Variables for User Entity
+ */
+
 @Entity
 @Table(name = "users")
 public class User {

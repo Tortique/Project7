@@ -3,6 +3,9 @@ package com.nnk.springboot.domain;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
+/**
+ * Variables for Trade Entity
+ */
 
 @Entity
 @Table(name = "trade")

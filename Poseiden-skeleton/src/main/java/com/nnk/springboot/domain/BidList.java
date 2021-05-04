@@ -3,6 +3,10 @@ package com.nnk.springboot.domain;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
+/**
+ * Variables for BidList Entity
+ */
+
 @Entity
 @Table(name = "bidlist")
 public class BidList {

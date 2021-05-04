@@ -2,6 +2,10 @@ package com.nnk.springboot.domain;
 
 import javax.persistence.*;
 
+/**
+ * Variables for Rating Entity
+ */
+
 @Entity
 @Table(name = "rating")
 public class Rating {

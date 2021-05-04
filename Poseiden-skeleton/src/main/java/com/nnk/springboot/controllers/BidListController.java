@@ -19,11 +19,10 @@ import javax.validation.Valid;
 import java.sql.Timestamp;
 
 /**
- * Created by SERVANT Adrien
- * Date 04/21/21
- * Time 15:00
+ * Html's problems "can't resolve [...]" worked fine, its known issues since 2015 with Intellij
  *
- * Comment : Html's problems "can't resolve [...]" worked fine, its known issues since 2015 with Intellij
+ * Controller for BidlList
+ * Can CRUD with @PathVariable Id
  */
 
 

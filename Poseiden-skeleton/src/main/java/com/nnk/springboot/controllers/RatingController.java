@@ -17,11 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.validation.Valid;
 
 /**
- * Created by SERVANT Adrien
- * Date 04/21/21
- * Time 16:20
+ * Html's problems "can't resolve [...]" worked fine, its known issues since 2015 with Intellij
  *
- * Comment : Html's problems "can't resolve [...]" worked fine, its known issues since 2015 with Intellij
+ * Controller for Rating
+ * Can CRUD with @PathVariable Id
  */
 
 @Controller

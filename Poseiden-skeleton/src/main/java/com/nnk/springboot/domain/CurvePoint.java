@@ -3,6 +3,9 @@ package com.nnk.springboot.domain;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
+/**
+ * Variables for CurvePoint Entity
+ */
 
 @Entity
 @Table(name = "curvepoint")

@@ -17,6 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
 
+/**
+ * Html's problems "can't resolve [...]" worked fine, its known issues since 2015 with Intellij
+ *
+ * Controller for User
+ * Can CRUD with @PathVariable Id
+ */
+
 @Controller
 @EnableWebSecurity
 public class UserController {

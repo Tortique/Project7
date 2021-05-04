@@ -15,9 +15,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.annotation.Resource;
 
 /**
- * Created by SERVANT Adrien
- * Date 04/20/21
- * Time 14:00
+ * Configuration for Spring Security.
+ * Password encoder : BCryptPasswordEncoder
+ * Need to be logging in for pages : /bidList, /curvePoint, /rating, /ruleName, /trade
+ * Session management with 1 maximum and migration
  */
 
 @Configuration
@@ -55,8 +56,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
          http.sessionManagement()
                  .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                 .sessionFixation().migrateSession()
-                 .maximumSessions(1).expiredUrl("/sessionExpired");
+                 .sessionFixation()
+                 .migrateSession()
+                 .maximumSessions(1)
+                 .expiredUrl("/sessionExpired");
     }
 
     @Override
